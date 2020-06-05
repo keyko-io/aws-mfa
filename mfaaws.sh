@@ -46,7 +46,7 @@ else
   exit 2
 fi
 
-AWS_CLI_PROFILE=${3:-ologin}
+AWS_CLI_PROFILE=${3:-keykologin}
 MFA_TOKEN_CODE=$1
 ARN_OF_MFA=${!AWS_CLI_PROFILE}
 CREDENTIALS_FILE=${CREDENTIALS_FILE:-$HOME/.aws/credentials}
@@ -70,11 +70,11 @@ if [ -z "$line" ]; then
   echo '[keyko]' >> ${CREDENTIALS_FILE}
   line=$(grep -rne '\[keyko\]' ${CREDENTIALS_FILE} | cut -f2 -d':')
 fi
-$aliased -i -e "$(( line + 1 )),$(( line + 4 ))d" ${CREDENTIALS_FILE}
+$aliassed -i -e "$(( line + 1 )),$(( line + 4 ))d" ${CREDENTIALS_FILE}
 # echo '' >> ${CREDENTIALS_FILE}
-$aliased -i "$(( line + 1))i\aws_security_token = $AWS_SECURITY_TOKEN" ${CREDENTIALS_FILE}
-$aliased -i "$(( line + 1))i\aws_session_token = $AWS_SESSION_TOKEN" ${CREDENTIALS_FILE}
-$aliased -i "$(( line + 1))i\aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" ${CREDENTIALS_FILE}
-$aliased -i "$(( line + 1))i\aws_access_key_id = $AWS_ACCESS_KEY_ID" ${CREDENTIALS_FILE}
+$aliassed -i "$(( line + 1))i\aws_security_token = $AWS_SECURITY_TOKEN" ${CREDENTIALS_FILE}
+$aliassed -i "$(( line + 1))i\aws_session_token = $AWS_SESSION_TOKEN" ${CREDENTIALS_FILE}
+$aliassed -i "$(( line + 1))i\aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" ${CREDENTIALS_FILE}
+$aliassed -i "$(( line + 1))i\aws_access_key_id = $AWS_ACCESS_KEY_ID" ${CREDENTIALS_FILE}
 export AWS_PROFILE='keyko'
 
