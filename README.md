@@ -21,11 +21,11 @@ The MFA code is the code your MFA device gives you.
 At a command prompt run the following command.
 
 ```
-mfa <mfacode> <optional-aws-profile>
+awsmfa <mfacode> <optional-aws-profile>
 ```
 
 ## Alias Note:
 Scripts run in a subprocess of the calling shell.  This means that
 if you attempt to set the env vars in the script, they will only persist
 inside that subprocess.  The `alias.sh` script sets an alias function to source the env vars into your main shell whenever you
-run the `mfa` command.
+run the `awsmfa` command.
