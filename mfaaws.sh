@@ -13,6 +13,8 @@
 # export AWS_SECRET_ACCESS_KEY='SECRET'
 # export AWS_SESSION_TOKEN='TOKEN'
 
+set -eu
+set -o pipefail
 
 if sed --help >/dev/null 2>&1; then
   aliassed=sed
@@ -64,12 +66,17 @@ source ~/.aws/.token_file
 export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN} AWS_SECURITY_TOKEN=${AWS_SECURITY_TOKEN}
 
 # Replace profile credentials for keyko
-line=$(grep -rne '\[keyko\]' ${CREDENTIALS_FILE} | cut -f2 -d':')
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    line=$(grep -rne '\[keyko\]' ${CREDENTIALS_FILE} | cut -f1 -d':')
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    line=$(grep -rne '\[keyko\]' ${CREDENTIALS_FILE} | cut -f2 -d':')
+fi
 if [ -z "$line" ]; then
   echo '' >> ${CREDENTIALS_FILE}
   echo '[keyko]' >> ${CREDENTIALS_FILE}
   line=$(grep -rne '\[keyko\]' ${CREDENTIALS_FILE} | cut -f2 -d':')
 fi
+set -x
 $aliassed -i -e "$(( line + 1 )),$(( line + 4 ))d" ${CREDENTIALS_FILE}
 # echo '' >> ${CREDENTIALS_FILE}
 $aliassed -i "$(( line + 1))i\aws_security_token = $AWS_SECURITY_TOKEN" ${CREDENTIALS_FILE}
@@ -77,4 +84,4 @@ $aliassed -i "$(( line + 1))i\aws_session_token = $AWS_SESSION_TOKEN" ${CREDENTI
 $aliassed -i "$(( line + 1))i\aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" ${CREDENTIALS_FILE}
 $aliassed -i "$(( line + 1))i\aws_access_key_id = $AWS_ACCESS_KEY_ID" ${CREDENTIALS_FILE}
 export AWS_PROFILE='keyko'
-
+set +x
