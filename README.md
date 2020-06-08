@@ -11,6 +11,12 @@ The ARN should be the ARN of your MFA device as specified in the AWS console.
 
 The MFA code is the code your MFA device gives you.
 
+# Prequirements
+
+## MacOs
+- brew install gnu-sed
+- brew install awscli
+
 # Installation
  1. Extract the files to your home directory `~/`
  2. Add `source ./alias.sh` to your `~/.bashrc`
